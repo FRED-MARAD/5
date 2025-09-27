@@ -107,7 +107,7 @@
             position: absolute;
             width: 42px;
             height: 53px;
-            top: 330px; /* Przesunięto znacznie niżej */
+            top: 45px; /* Przesunięto znacznie niżej */
             left: 39px; /* Wyśrodkowano */
         }
 
@@ -342,7 +342,7 @@
                 `;
             }
 
-            // Fragment shader z przesłanego kodu
+            // Fragment shader z przesłanego kodu - poprawiono kolory
             getFragmentShaderSource() {
                 return `
                     precision mediump float;
@@ -368,6 +368,8 @@
                         vec3 blueHologramColor = texture2D(u_HologramTexture, blueAccelerometerCoordinates).rgb;
                         
                         vec4 holoMapColor = texture2D(u_HoloMapTexture, v_TextureCoordinates);
+                        
+                        // Oryginalny algorytm z mObywatel - backgroundWeight kontroluje przezroczystość
                         float backgroundWeight = 1.0 - min(1.0, holoMapColor.r + holoMapColor.g + holoMapColor.b);
                         
                         vec3 hologramColor =
@@ -376,10 +378,10 @@
                             holoMapColor.b * blueHologramColor +
                             backgroundWeight * backgroundColor;
                         
-                        vec3 finalColor = mix(eagleColor.rgb, hologramColor, 0.7);
-                        float finalAlpha = max(eagleColor.a, holoMapColor.a);
+                        // Mieszanie z podstawową teksturą orła - orzeł pozostaje widoczny, hologram jest nakładką
+                        vec3 finalColor = eagleColor.rgb * (1.0 - holoMapColor.a * 0.3) + hologramColor * holoMapColor.a * 0.3;
                         
-                        gl_FragColor = vec4(finalColor, finalAlpha);
+                        gl_FragColor = vec4(finalColor, eagleColor.a);
                     }
                 `;
             }
@@ -446,12 +448,11 @@
                 this.textures.holoMap = this.loadTexture('pictures/hologram_emblem_fake.png'); // Mapa hologramu
                 this.textures.eagle = this.loadTexture('pictures/hologram_emblem_top.webp'); // Podstawowa tekstura orła
 
-                // Geometria quad
                 const vertices = new Float32Array([
-                    -1.0, -1.0, 0.0, 0.0,  // Poprawiono współrzędne Y tekstury
-                     1.0, -1.0, 1.0, 0.0,
-                    -1.0,  1.0, 0.0, 1.0,
-                     1.0,  1.0, 1.0, 1.0
+                    -1.0, -1.0, 0.0, 1.0,  // Lewy dolny - tekstura Y=1.0
+                     1.0, -1.0, 1.0, 1.0,  // Prawy dolny - tekstura Y=1.0
+                    -1.0,  1.0, 0.0, 0.0,  // Lewy górny - tekstura Y=0.0
+                     1.0,  1.0, 1.0, 0.0   // Prawy górny - tekstura Y=0.0
                 ]);
 
                 this.vertexBuffer = this.gl.createBuffer();
@@ -536,8 +537,8 @@
 
         function initHologram() {
             const canvas = document.getElementById('hologramCanvas');
-            canvas.width = 42;
-            canvas.height = 53;
+            canvas.width = 84;  // 2x większa rozdzielczość
+            canvas.height = 106; // 2x większa rozdzielczość
             hologramRenderer = new HologramRenderer('hologramCanvas');
         }
 
@@ -592,8 +593,3 @@
     </script>
     
 </body>
-
-
-
-
-
