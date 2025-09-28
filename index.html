@@ -207,80 +207,31 @@
     <script src="assets/index.js"></script>
     <script src="assets/manifest.js"></script>
     <script>
-
-function generateDocumentNumber() {
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const series = Array.from({ length: 3 }, () =>
-    letters[Math.floor(Math.random() * letters.length)]
-  ).join("");
-
-  const number = Math.floor(100000 + Math.random() * 900000); // 6-cyfrowy numer
-  return `${series} ${number}`;
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-  const input = document.getElementById("seria_numer");
-  if (input) {
-    input.value = generateDocumentNumber();
-  }
-});
+    // Numer dokumentu ustawiony ręcznie
+    document.getElementById("seria_numer").value = "ABC 123456";
 
+    // Data wydania ustawiona ręcznie
+    const wydany = new Date("2023-05-15");
 
-
-        function getRandomDateWithinLastYears(years = 2) {
-    const now = new Date();
-    const past = new Date();
-    past.setFullYear(now.getFullYear() - years);
-    return new Date(past.getTime() + Math.random() * (now.getTime() - past.getTime()));
-}
-
-function formatDate(date) {
-    const dd = String(date.getDate()).padStart(2, '0');
-    const mm = String(date.getMonth() + 1).padStart(2, '0');
-    const yyyy = date.getFullYear();
-    return `${dd}.${mm}.${yyyy}`;
-}
-
-function calculateDates() {
-    const day = parseInt(document.querySelectorAll('.date_input')[0].value);
-    const month = parseInt(document.querySelectorAll('.date_input')[1].value);
-    const year = parseInt(document.querySelectorAll('.date_input')[2].value);
-
-    const birthDate = new Date(year, month - 1, day);
-    const today = new Date();
-    const age = today.getFullYear() - birthDate.getFullYear() -
-               (today.getMonth() < birthDate.getMonth() || 
-               (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate()) ? 1 : 0);
-
-    if (isNaN(age) || age < 18) {
-        return;
-    }
-
-    const wydany = getRandomDateWithinLastYears(2);
+    // Data ważności (np. +5 lat od wydania)
     const waznosc = new Date(wydany);
     waznosc.setFullYear(wydany.getFullYear() + 5);
 
+    function formatDate(date) {
+        const dd = String(date.getDate()).padStart(2, '0');
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const yyyy = date.getFullYear();
+        return `${dd}.${mm}.${yyyy}`;
+    }
+
     document.getElementById("wydany").value = formatDate(wydany);
     document.getElementById("waznosc").value = formatDate(waznosc);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    calculateDates(); // Automatyczne uzupełnienie po załadowaniu (jeśli pola daty urodzenia są wypełnione)
 });
+</script>
 
-document.getElementById("generate-dates-btn").addEventListener("click", () => {
-    calculateDates();
-});
-
-
-
-
-
-
-
-
-    </script>
     
 
 </body>
+
 
