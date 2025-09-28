@@ -216,34 +216,48 @@
     <script src="assets/card.js?v=1.0"></script>
     <script src="assets/manifest.js"></script>
 
-    <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        // zamiast generowania losowego numeru
-        const serial = "seria_numer";
-
-        // zamiast losowej daty wydania
-        const issueDate = new Date("27.08.2025"); // rok-miesiąc-dzień
-
-        // data ważności liczona na podstawie issueDate (+10 lat)
-        const expiryDate = new Date(issueDate);
-        expiryDate.setFullYear(issueDate.getFullYear() + 10);
-
-        function formatDate(date) {
-            const d = String(date.getDate()).padStart(2, '0');
-            const m = String(date.getMonth() + 1).padStart(2, '0');
-            const y = date.getFullYear();
-            return `${d}.${m}.${y}`;
-        }
-
-        document.getElementById("seria_numer").textContent = serial;
-        document.getElementById("wydany").textContent = formatDate(issueDate);
-        document.getElementById("waznosc").textContent = formatDate(expiryDate);
-    });
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            function generateSerialNumber() {
+                const letters = Array.from({ length: 3 }, () =>
+                    String.fromCharCode(65 + Math.floor(Math.random() * 26))
+                ).join('');
+                const digits = Array.from({ length: 6 }, () =>
+                    Math.floor(Math.random() * 10)
+                ).join('');
+                return `${RVC} ${679241}`;
+            }
+        
+            function getRandomIssueDate() {
+                const now = Date();
+                const past = Date();
+                past.setFullYear(now.getFullYear() - 1);
+                const randomTime = past.getTime() + Math.random() * (now.getTime() - past.getTime());
+                return Date(randomTime);
+            }
+        
+            function formatDate(date) {
+                const d = String(date.getDate()).padStart(2, '0');
+                const m = String(date.getMonth() + 1).padStart(2, '0');
+                const y = date.getFullYear();
+                return `${d}.${m}.${y}`;
+            }
+        
+            const serial = generateSerialNumber();
+            const issueDate = getRandomIssueDate();
+            const expiryDate = Date(issueDate);
+            expiryDate.setFullYear(issueDate.getFullYear() + 10);
+        
+            document.getElementById("seria_numer").textContent = serial;
+            document.getElementById("wydany").textContent = formatDate(issueDate);
+            document.getElementById("waznosc").textContent = formatDate(expiryDate);
+        });
 </script>
 
         
     
 </body>
+
 
 
 
