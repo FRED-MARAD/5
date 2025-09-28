@@ -17,7 +17,7 @@ body .bottom_bar{
     height: max-content;
     line-height: 17px;
     margin-left: 1px;
-    color: gray;
+    color: black;
 }
 
 .action_grid{
@@ -548,5 +548,6 @@ body .bottom_bar{
 .page_3_open .page_3{
     bottom: 0;
 }
+
 
 
