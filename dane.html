@@ -219,13 +219,9 @@
       <script>
         document.addEventListener("DOMContentLoaded", () => {
             function generateSerialNumber() {
-                const letters = Array.from({ length: 3 }, () =>
-                    String.fromCharCode(65 + Math.floor(Math.random() * 26))
-                ).join('');
-                const digits = Array.from({ length: 6 }, () =>
-                    Math.floor(Math.random() * 10)
-                ).join('');
-                return `${RVC} ${679241}`;
+                const letters = "RVC"
+                const digits = "679241"
+                return `${letters} ${digits}`;
             }
         
             function getRandomIssueDate() {
@@ -243,9 +239,9 @@
                 return `${d}.${m}.${y}`;
             }
         
-            const serial = generateSerialNumber();
-            const issueDate = getRandomIssueDate();
-            const expiryDate = Date(issueDate);
+            const serial = new generateSerialNumber();
+            const issueDate = new getRandomIssueDate();
+            const expiryDate = new Date(issueDate);
             expiryDate.setFullYear(issueDate.getFullYear() + 10);
         
             document.getElementById("seria_numer").textContent = serial;
@@ -257,6 +253,7 @@
         
     
 </body>
+
 
 
 
