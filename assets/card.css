@@ -11,7 +11,7 @@ body .bottom_bar{
 
 .eagle_text{
     font-size: 14px;
-    font-weight: 200;
+    font-weight: 300;
     margin-top: 0px;
     margin-bottom: auto;
     height: max-content;
@@ -548,6 +548,7 @@ body .bottom_bar{
 .page_3_open .page_3{
     bottom: 0;
 }
+
 
 
 
